@@ -1,13 +1,33 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Statistic = ({text, value}) => (
+  <p>{text}: {value}</p>
+)
+
+
 const Statistics = ({good, neutral, bad}) => {
+  const total = good + neutral + bad
+  const average = (good - bad) / total
+  const goodPercent = `${good / total * 100}%`
+  
+  if (average) {
+    return (
+      <div>
+        <h3>Statistics</h3>
+        <Statistic text={'Good'} value={good} />
+        <Statistic text={'Neutral'} value={neutral} />
+        <Statistic text={'Bad'} value={bad} />
+        <Statistic text={'Total'} value={total} />
+        <Statistic text={'Average'} value={average} />
+        <Statistic text={'Positive'} value={goodPercent} />
+      </div>
+    )
+  }
+
   return (
     <div>
       <h3>Statistics</h3>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
     </div>
   )
 }
