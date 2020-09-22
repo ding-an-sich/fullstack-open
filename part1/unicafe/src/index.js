@@ -14,7 +14,7 @@ const Statistics = ({good, neutral, bad}) => {
   const average = (good - bad) / total
   const goodPercent = `${good / total * 100}%`
   
-  if (total > 0) {
+  if (total) {
     return (
       <div>
         <h3>Statistics</h3>
