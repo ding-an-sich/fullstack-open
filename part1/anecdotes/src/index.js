@@ -30,6 +30,7 @@ const App = (props) => {
       { `${votes[selected]} votes` }
       <br></br>
       <h3>Most voted anecdote</h3>
+      {/* Very slow method for getting the index of the biggest element, but it's okay in our case (small array) */}
       {anecdotes[votes.indexOf(Math.max.apply(null, votes))]}
     </div>
   )
