@@ -28,6 +28,9 @@ const App = (props) => {
       <Button handleClick={rollAnecdote} text={'next anecdote'}/>
       <Button handleClick={incrementVote} text={'vote'} />
       { `${votes[selected]} votes` }
+      <br></br>
+      <h3>Most voted anecdote</h3>
+      {anecdotes[votes.indexOf(Math.max.apply(null, votes))]}
     </div>
   )
 }
