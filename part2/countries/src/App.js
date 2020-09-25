@@ -9,6 +9,39 @@ const Filter = (props) => {
   )
 }
 
+const Weather = ({ capital }) => {
+  const [weatherInfo, setWeatherInfo] = useState({})
+  // We construct the weather info object inside the response
+  useEffect(() => {
+    const api_key = process.env.REACT_APP_API_KEY
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${api_key}`)
+          .then(response => {
+            const temp = response.data.main.temp
+            const windSpeed = response.data.wind.speed
+            const windDirection = response.data.wind.deg
+            setWeatherInfo({
+              temperature: temp,
+              iconURL: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+              windSpeed: windSpeed,
+              windDirection: windDirection
+            })
+          })
+  }, [capital])
+
+  if (weatherInfo.temperature) {
+    return (
+      <div>
+        <h3>{`Weather in ${capital}`}</h3>
+        <p><strong>temperature: </strong>{`${weatherInfo.temperature} celsius`}</p>
+        <img src={weatherInfo.iconURL} alt={`Weather in ${capital}`}></img>
+        <p><strong>wind: </strong>{`${weatherInfo.windSpeed} m/s, ${weatherInfo.windDirection} degrees`}</p>
+      </div>
+    )                            
+  }
+
+  return null
+}
+
 const Details = ({ country }) => {
 
   return (
@@ -27,6 +60,7 @@ const Details = ({ country }) => {
       <div>
         <img src={country.flag} alt={`Flag of ${country.name}`}></img>
       </div>
+        <Weather capital={country.capital} />
     </div>
   )
 }
