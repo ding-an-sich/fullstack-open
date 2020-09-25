@@ -81,7 +81,10 @@ const App = () => {
 
   const personList = searchFilter === ''
     ? persons
-    : persons.filter(person => person.name.toUpperCase() === searchFilter.toUpperCase())
+    : persons.filter((person) => {
+      const comparison = person.name.localeCompare(searchFilter, undefined, {sensitivity: 'base'})
+      return comparison === 0
+    })
 
   return (
     <div>
