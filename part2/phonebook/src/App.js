@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import List from './components/List'
 import Form from './components/Form'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchFilter, setSearchFilter ] = useState('')
+  const [ message, setMessage ] = useState({})
 
   useEffect(() => {
     personService
@@ -37,6 +39,10 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessage({...message, type:'ok', text:`${returnedPerson.name} added`})
+          setTimeout(() => {
+            setMessage({})
+          }, 2000)
         })
     }
     setNewNumber('')
@@ -49,6 +55,9 @@ const App = () => {
     personService
       .destroy(person.id)
       .then(() => {
+        // To force an error, comment next line and (1) delete an entry,
+        // (2) try to edit the deleted entry (enter the same name and 
+        // different number) and (3) press ok in the confirmation window.
         setPersons(persons.filter(person => person.id !== id))
       })
   }
@@ -58,11 +67,16 @@ const App = () => {
       .update(id, newPerson)
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        setMessage({...message, type:'ok', text:`${returnedPerson.name} entry updated`})
+        setTimeout(() => {
+          setMessage({})
+        }, 2000)
       })
       .catch(error => {
-        alert(
-          `Entry not found! Something went wrong! ${error}`
-        )
+        setMessage({...message, type:'error', text:`${error}`})
+        setTimeout(() => {
+          setMessage({})
+        }, 2000)
         setPersons(persons.filter(person => person.id !== id))
       })
   }
@@ -86,6 +100,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message}/>
       <h1>Phonebook</h1>
       <Filter searchFilter={searchFilter} handleSearchFilter={handleSearchFilter}/>
       <h2>Add new entry</h2>
