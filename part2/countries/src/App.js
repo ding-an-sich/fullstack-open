@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -13,6 +14,7 @@ const Weather = ({ capital }) => {
   const [weatherInfo, setWeatherInfo] = useState({})
   // We construct the weather info object inside the response
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     const api_key = process.env.REACT_APP_API_KEY
     axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${api_key}`)
           .then(response => {
